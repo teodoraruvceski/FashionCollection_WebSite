@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FashionCollection_Project.Database;
+using FashionCollection_Project.Database.interfaces;
 using FashionCollection_Project.Models;
 using FashionCollection_Project.Models.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +15,12 @@ namespace FashionCollection_Project.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        IUserProvider userProvider = new DBUserProvider();
         [HttpPost]
         [Route("login")]
         public IActionResult Login([FromBody]UserDTO u)
         {
-            User user = DBProvider.FindUserByUsername(u.Username);
+            User user = userProvider.FindUserByUsername(u.Username);
             if (user!=null && user.Password==u.Password)
             {
                 Logger.LogEvent(EventType.INFO, $"User {u.Username} successfully logged in", DateTime.Now);
@@ -34,7 +36,7 @@ namespace FashionCollection_Project.Controllers
             int role;
             if(Int32.TryParse(user.Role,out role))
             {
-                List<User> users = DBProvider.RetrieveAllUsers();
+                List<User> users = userProvider.RetrieveAllUsers();
                 foreach (User u in users)
                 {
                     if (user.Username == u.Username)
@@ -46,7 +48,7 @@ namespace FashionCollection_Project.Controllers
                 if (role < 2 && role >= 0)
                 {
                     Logger.LogEvent(EventType.INFO, $"User {user.Username} successfully registered", DateTime.Now);
-                    DBProvider.AddUser(user.CreateUser());
+                    userProvider.AddUser(user.CreateUser());
                     return Ok("Registered");
 
                 }
@@ -63,10 +65,10 @@ namespace FashionCollection_Project.Controllers
         [Route("editProfile")]
         public IActionResult EditProfile([FromBody]UserDTO u)
         {
-            if(DBProvider.FindUserByUsername(u.Username)!=null)
+            if(userProvider.FindUserByUsername(u.Username)!=null)
             {
-               
-                DBProvider.UpdateUser(u.CreateUser());
+
+                userProvider.UpdateUser(u.CreateUser());
                 Logger.LogEvent(EventType.INFO, $"User {u.Username} edited", DateTime.Now);
                 return Ok("changes saved ");
             }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace FashionCollection_Project.Models
 {
-    public class Wear
+    public  class Wear
     {
-        public Wear(string name, string description,int fashionCollectionId)
+        public Wear(string name, string description, int fashionCollectionId)
         {
             Name = name;
             FashionCollectionId = fashionCollectionId;

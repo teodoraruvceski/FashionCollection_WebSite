@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FashionCollection_Project.Database;
+using FashionCollection_Project.Database.interfaces;
 using FashionCollection_Project.Models;
 using FashionCollection_Project.Models.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,7 @@ namespace FashionCollection_Project
     [Route("[controller]")]
     public class FashionCollectionController : ControllerBase
     {
-
+        ICollectionProvider collectionProvider = new DBCollectionProvider();
         [HttpGet]
         [Route("get")]
         public IEnumerable<FashionCollection> Get()
@@ -25,14 +26,14 @@ namespace FashionCollection_Project
             //List<FashionCollection> l = new List<FashionCollection>() { f1, f2 };
             //DBProvider.AddCollection(f1);
             //DBProvider.AddCollection(f2);
-            List<FashionCollection> l = DBProvider.RetrieveAllCollections();
+            List<FashionCollection> l = collectionProvider.RetrieveAllCollections();
             return l;
         }
         [HttpDelete]
         [Route("delete")]
         public string Delete(int id)
         {
-            if (DBProvider.DeleteCollection(id))
+            if (collectionProvider.DeleteCollection(id))
             {
                 Logger.LogEvent(EventType.INFO, $"Collection with id: {id} deleted.", DateTime.Now);
                 return "ok";
@@ -48,12 +49,12 @@ namespace FashionCollection_Project
         [Route("copy")]
         public void Copy(int id)
         {
-            FashionCollection fc = DBProvider.FindCollectionById(id);
+            FashionCollection fc = collectionProvider.FindCollectionById(id);
             FashionCollection newCollection= new FashionCollection(fc.Designer, fc.Year, fc.Season);
             if (fc != null)
             {
                 Logger.LogEvent(EventType.INFO, $"Collection with id: {id} copied.", DateTime.Now);
-                DBProvider.AddCollection(newCollection);
+                collectionProvider.AddCollection(newCollection);
             }
             else
             {
@@ -64,7 +65,7 @@ namespace FashionCollection_Project
         [Route("rate")]
         public void Rate(int id,int rate)
         {
-            FashionCollection fc = DBProvider.FindCollectionById(id);
+            FashionCollection fc = collectionProvider.FindCollectionById(id);
             if(fc!=null)
             {
                 fc.RateCount++;
@@ -101,7 +102,7 @@ namespace FashionCollection_Project
                 
             }
             Logger.LogEvent(EventType.INFO, $"Collection  by {collection.Designer} for season: {collection.Season} added.", DateTime.Now);
-            DBProvider.AddCollection(fashionCollection);
+            collectionProvider.AddCollection(fashionCollection);
             
             return Ok("Added");
         }
@@ -112,9 +113,9 @@ namespace FashionCollection_Project
             int season = Int32.Parse(collection.Season);
             if (season < 0 || season > 3)
                 return NotFound("Invalid input.");
-            if (DBProvider.FindCollectionById(collection.Id)!=null)
+            if (collectionProvider.FindCollectionById(collection.Id)!=null)
             {
-                DBProvider.UpdateCollection(collection.CreateFashionCollection());
+                collectionProvider.UpdateCollection(collection.CreateFashionCollection());
                 Logger.LogEvent(EventType.INFO, $"Collection  by {collection.Designer} for season: {collection.Season} edited.", DateTime.Now);
                 return Ok("ok");
             }

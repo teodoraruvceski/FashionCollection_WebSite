@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_Project\\FashionCollection_Project\\FashionCollection_Project.csproj": {}
+    "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj": {}
   },
   "projects": {
-    "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_Project\\FashionCollection_Project\\FashionCollection_Project.csproj": {
+    "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_Project\\FashionCollection_Project\\FashionCollection_Project.csproj",
+        "projectUniqueName": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj",
         "projectName": "FashionCollection_Project",
-        "projectPath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_Project\\FashionCollection_Project\\FashionCollection_Project.csproj",
+        "projectPath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj",
         "packagesPath": "C:\\Users\\Teodora\\.nuget\\packages\\",
-        "outputPath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_Project\\FashionCollection_Project\\obj\\",
+        "outputPath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

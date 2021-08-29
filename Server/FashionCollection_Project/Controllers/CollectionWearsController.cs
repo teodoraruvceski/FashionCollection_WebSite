@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FashionCollection_Project.Database;
+using FashionCollection_Project.Database.interfaces;
 using FashionCollection_Project.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FashionCollection_Project.Controllers
 {
+    
     [Route("[controller]")]
     [ApiController]
     public class CollectionWearsController : ControllerBase
     {
+        ICollectionProvider collectionProvider = new DBCollectionProvider();
+        IWearProvider wearProvider = new DBWearProvider();
 
         [HttpGet]
         [Route("get")]
@@ -24,18 +28,18 @@ namespace FashionCollection_Project.Controllers
             //DBProvider.AddCollection(f1);
             //DBProvider.AddCollection(f2);
             
-            FashionCollection fc = DBProvider.FindCollectionById(id);
+            FashionCollection fc = collectionProvider.FindCollectionById(id);
             List<Wear> proba = fc.Wears.ToList() ;
             List<Wear> l = new List<Wear>();
             if (fc != null)
-                l = DBProvider.RetrieveWearsByCollectionId(id);
+                l = wearProvider.RetrieveWearsByCollectionId(id);
             return l;
         }
         [HttpDelete]
         [Route("deleteWear")]
         public string DeleteWear(int id)
         {
-            if (DBProvider.DeleteWear(id))
+            if (wearProvider.DeleteWear(id))
             {
                 Logger.LogEvent(EventType.INFO, $"Wear with id: {id} deleted.", DateTime.Now);
                 return "ok";
@@ -50,11 +54,11 @@ namespace FashionCollection_Project.Controllers
         [Route("copy")]
         public void Copy(int id)
         {
-            Wear w= DBProvider.FindWearById(id);
+            Wear w= wearProvider.FindWearById(id);
             if(w!=null)
             {
                 Wear newWear = new Wear(w.Name, w.Description, w.FashionCollectionId);
-                DBProvider.AddWear(newWear);
+                wearProvider.AddWear(newWear);
                 Logger.LogEvent(EventType.INFO, $"Wear with id: {id} copied.", DateTime.Now);
             }
             else
@@ -68,7 +72,7 @@ namespace FashionCollection_Project.Controllers
         [Route("addWear")]
         public IActionResult AddWear([FromBody]Wear wear)
         {
-            List<Wear> wears= DBProvider.RetrieveWearsByCollectionId(wear.FashionCollectionId);
+            List<Wear> wears= wearProvider.RetrieveWearsByCollectionId(wear.FashionCollectionId);
             foreach (Wear ww in wears)
             {
                 if (ww.Name == wear.Name)
@@ -78,18 +82,18 @@ namespace FashionCollection_Project.Controllers
                 }
 
             }
-            DBProvider.AddWear(wear);
+            wearProvider.AddWear(wear);
             Logger.LogEvent(EventType.INFO, $"Wear with name: {wear.Name} added.", DateTime.Now);
 
             return Ok("ok");
         }
         [HttpPost]
         [Route("editWear")]
-        public IActionResult EditCollection([FromBody]Wear wear)
+        public IActionResult EditWear([FromBody]Wear wear)
         {
-            if(DBProvider.FindWearById(wear.Id)!=null)
+            if(wearProvider.FindWearById(wear.Id)!=null)
             {
-                DBProvider.UpdateWear(wear);
+                wearProvider.UpdateWear(wear);
                 Logger.LogEvent(EventType.INFO, $"Wear with id: {wear.Id} edited.",DateTime.Now);
                 return Ok("ok");
             }

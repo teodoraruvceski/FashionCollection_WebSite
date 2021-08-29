@@ -143,3 +143,10 @@ E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_Project\FashionCollecti
 E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_Project\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.pdb
 E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_Project\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.genruntimeconfig.cache
 E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_Project\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.csprojAssemblyReference.cache
+E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_WebSiteGit\Server\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.csprojAssemblyReference.cache
+E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_WebSiteGit\Server\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.csproj.CoreCompileInputs.cache
+E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_WebSiteGit\Server\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.MvcApplicationPartsAssemblyInfo.cache
+E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_WebSiteGit\Server\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.AssemblyInfoInputs.cache
+E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_WebSiteGit\Server\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.AssemblyInfo.cs
+E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_WebSiteGit\Server\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.dll
+E:\Tea\fax\3.godina\2.sem\rva\Projekat\FashionCollection_WebSiteGit\Server\FashionCollection_Project\obj\Debug\netcoreapp3.1\FashionCollection_Project.pdb

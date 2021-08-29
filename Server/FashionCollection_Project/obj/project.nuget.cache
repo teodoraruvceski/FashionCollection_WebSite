@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "66qWgGfRAon/jQdSc72HqTl7qr7ajjVB04u1VA/RkslQ1kdOS7f6p8WRYQuKAOgOMmCgLG+31FEVz19JTX22ow==",
+  "dgSpecHash": "/opMBl0gkc3fsDVOqKWkqgrt0gu773zDWj2ztD8seGIs8Ya0QqNhW8TkzNUrcMlV//QVAOf7ukd472BfoDBbBg==",
   "success": true,
-  "projectFilePath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_Project\\FashionCollection_Project\\FashionCollection_Project.csproj",
+  "projectFilePath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Teodora\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Teodora\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
