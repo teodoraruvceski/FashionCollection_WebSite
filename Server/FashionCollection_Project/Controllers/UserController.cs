@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FashionCollection_Project.Database;
 using FashionCollection_Project.Database.interfaces;
+using FashionCollection_Project.Logger;
 using FashionCollection_Project.Models;
 using FashionCollection_Project.Models.DTOs;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,7 @@ namespace FashionCollection_Project.Controllers
     public class UserController : ControllerBase
     {
         IUserProvider userProvider = new DBUserProvider();
+        ILogger logger = new TxtLogger();
         [HttpPost]
         [Route("login")]
         public IActionResult Login([FromBody]UserDTO u)
@@ -23,10 +25,12 @@ namespace FashionCollection_Project.Controllers
             User user = userProvider.FindUserByUsername(u.Username);
             if (user!=null && user.Password==u.Password)
             {
-                Logger.LogEvent(EventType.INFO, $"User {u.Username} successfully logged in", DateTime.Now);
-                return Ok(user);
+                logger.LogEvent(EventType.INFO, $"User {u.Username} successfully logged in", DateTime.Now);
+                UserDTO uDTO = new UserDTO(user.Name, user.LastName, user.Username, user.Password, user.Email, ((int)user.Role).ToString());
+                uDTO.Id = user.Id;
+                return Ok(uDTO);
             }
-            Logger.LogEvent(EventType.ERROR, $"User {u.Username} does not exist or entered wrong password.", DateTime.Now);
+            logger.LogEvent(EventType.ERROR, $"User {u.Username} does not exist or entered wrong password.", DateTime.Now);
             return NotFound("Incorrect username or password");
         }
         [HttpPost]
@@ -41,13 +45,13 @@ namespace FashionCollection_Project.Controllers
                 {
                     if (user.Username == u.Username)
                     {
-                        Logger.LogEvent(EventType.ERROR, $"User with username: {user.Username} cannot be registered, username is not available.", DateTime.Now);
-
+                        logger.LogEvent(EventType.ERROR, $"User with username: {user.Username} cannot be registered, username is not available.", DateTime.Now);
+                        return NotFound("User already exists.");
                     }
                 }
                 if (role < 2 && role >= 0)
                 {
-                    Logger.LogEvent(EventType.INFO, $"User {user.Username} successfully registered", DateTime.Now);
+                    logger.LogEvent(EventType.INFO, $"User {user.Username} successfully registered", DateTime.Now);
                     userProvider.AddUser(user.CreateUser());
                     return Ok("Registered");
 
@@ -69,12 +73,12 @@ namespace FashionCollection_Project.Controllers
             {
 
                 userProvider.UpdateUser(u.CreateUser());
-                Logger.LogEvent(EventType.INFO, $"User {u.Username} edited", DateTime.Now);
+                logger.LogEvent(EventType.INFO, $"User {u.Username} edited", DateTime.Now);
                 return Ok("changes saved ");
             }
             else
             {
-                Logger.LogEvent(EventType.ERROR, $"User with username: {u.Username} cannot be edited, user does not exist.", DateTime.Now);
+                logger.LogEvent(EventType.ERROR, $"User with username: {u.Username} cannot be edited, user does not exist.", DateTime.Now);
                 return NotFound("User does not exist.");
             }
             

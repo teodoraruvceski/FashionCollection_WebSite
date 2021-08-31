@@ -16,9 +16,10 @@ import { InfoIcon, LockIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { MailRounded, PersonAddRounded, PersonRounded } from "@material-ui/icons";
 import {useNavigate} from 'react-router-dom';
+import { LogEvent } from "../services/logEvent"
 
 const Register = ()=>{
-const [message,setMessage] = useState("Vasi podaci ostace privatni");
+const [message,setMessage] = useState("");
 const[valid,setValid]=useState(false);
 const nav=useNavigate();
 useEffect(() => {
@@ -26,6 +27,14 @@ useEffect(() => {
   {
     nav('/items');
   }
+  else if (message === "Invalid input.")
+  {
+   LogEvent("tried to register new user, INVALID input." , "ERROR");
+  }
+  else if (message === "User already exists.")
+  {
+    LogEvent("tried to register new user, user already exists." , "ERROR");
+    }
 }, [message])
 
 const FunCall = async () => {
@@ -40,7 +49,7 @@ const FunCall = async () => {
       username: "",
       password: "",
       email: "",
-      role:""
+      role:-1
     });
   };
   
@@ -72,11 +81,13 @@ const FunCall = async () => {
        }
        else if(!person.email.includes("@") || !person.email.includes("."))
        {
-         setMessage("Invalid email format.");
+      setMessage("Invalid email format.");
+      LogEvent("tried to register new user, INVALID email format." , "ERROR");
        }
        else {
          console.log(person);
       FunCall();
+      LogEvent("registered new user." , "INFO");
      
     }
   };
@@ -88,7 +99,7 @@ const FunCall = async () => {
       <Stack spacing={3} margin={4}>
           <FormControl isRequired>
           <InputGroup>
-            <InputLeftElement children={<Icon as={InfoIcon} />} />
+            <InputLeftElement color="#A26734" children={<Icon as={InfoIcon} />} />
             <Input
               type="name"
               name="name"
@@ -97,15 +108,16 @@ const FunCall = async () => {
               onChange={handleChange}
               placeholder="Name"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
-              width="200 px"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
+                width="200 px"
+                focusBorderColor="#794D27"
             />
           </InputGroup>
         </FormControl>
         <FormControl isRequired>
           <InputGroup>
-            <InputLeftElement children={<Icon as={InfoIcon} />} />
+            <InputLeftElement color="#A26734" children={<Icon as={InfoIcon} />} />
             <Input
               type="lastaname"
               name="lastName"
@@ -114,15 +126,16 @@ const FunCall = async () => {
               onChange={handleChange}
               placeholder="Lastname"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
-              width="200 px"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
+                width="200 px"
+                focusBorderColor="#794D27"
             />
           </InputGroup>
         </FormControl>
         <FormControl isRequired>
           <InputGroup>
-            <InputLeftElement children={<Icon as={PersonRounded} />} />
+            <InputLeftElement color="#A26734" children={<Icon as={PersonRounded} />} />
             <Input
               type="name"
               name="username"
@@ -131,15 +144,16 @@ const FunCall = async () => {
               onChange={handleChange}
               placeholder="Username"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
-              width="200 px"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
+                width="200 px"
+                focusBorderColor="#794D27"
             />
           </InputGroup>
         </FormControl>
         <FormControl isRequired>
           <InputGroup>
-           <InputLeftElement  children={<Icon as={LockIcon} />} />
+           <InputLeftElement color="#A26734"  children={<Icon as={LockIcon} />} />
             <Input
               type="password"
               name="password"
@@ -148,17 +162,17 @@ const FunCall = async () => {
               onChange={handleChange}
               placeholder="Password"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
               width="200 px"
-              focusBorderColor="#B794F4"
+              focusBorderColor="#794D27"
               
             />
           </InputGroup>
         </FormControl>
         <FormControl isRequired>
           <InputGroup>
-            <InputLeftElement children={<Icon as={MailRounded} />} />
+            <InputLeftElement color="#A26734" children={<Icon as={MailRounded} />} />
             <Input
               type="email"
               name="email"
@@ -167,34 +181,36 @@ const FunCall = async () => {
               onChange={handleChange}
               placeholder="Email"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
-              width="200 px"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
+                width="200 px"
+                focusBorderColor="#794D27"
             />
           </InputGroup>
         </FormControl>
         <FormControl isRequired>
           <InputGroup>
             <Select
-              bg="#F1EFED"
-              borderColor="#E9D8FD"
-              textColor="#F3383F"
+              bg="#E2E0E0"
+              borderColor="#E2E0E0"
+              textColor="#794D27"
               placeholder="Select role"
               onChange={handleChange}
               name="role"
               id="role"
               typeof="number"
-              value={person.role}
+                value={person.role}
+                focusBorderColor="#794D27"
             >
               <option value="0">User</option>
               <option value="1">Admin</option>
               </Select>
           </InputGroup>
         </FormControl>
-        <Button  textColor="#ffffff" bgColor="#F3383F" onClick={handleSubmit} width="200 px">
+        <Button  textColor="#ffffff" bgColor="#A26734" onClick={handleSubmit} width="200 px">
           Register
         </Button>
-        <Text  textColor="#F3383F">{message}</Text>
+        <Text  textColor="#794D27">{message}</Text>
       </Stack>
       </Center>
     </form>

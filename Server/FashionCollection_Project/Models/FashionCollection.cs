@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FashionCollection_Project.Models.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,16 @@ namespace FashionCollection_Project.Models
             Rates = 0;
             Wears = new List<Wear>();
 
+        }
+        public FashionCollectionDTO CreateDTO()
+        {
+            FashionCollectionDTO ret = new FashionCollectionDTO(Designer, Year, ((int)Season).ToString());
+            ret.Id = Id;
+            ret.Score = Score;
+            ret.RateCount = RateCount;
+            ret.Rates = Rates;
+            ret.Wears = Wears;
+            return ret;
         }
         public FashionCollection()
         {

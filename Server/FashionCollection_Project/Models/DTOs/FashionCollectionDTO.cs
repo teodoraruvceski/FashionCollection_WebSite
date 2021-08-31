@@ -18,12 +18,22 @@ namespace FashionCollection_Project.Models.DTOs
         }
         public FashionCollection CreateFashionCollection()
         {
-            return new FashionCollection(this.Designer, this.Year, (SEASON)(Int32.Parse(this.Season)));
+            FashionCollection f= new FashionCollection(this.Designer, this.Year, (SEASON)(Int32.Parse(this.Season)));
+            f.Id = Id;
+            f.Score = Score;
+            f.Rates = Rates;
+            f.RateCount = RateCount;
+            f.Wears = Wears;
+            return f;
         }
 
         public int Id { get; set; }
         public string Designer { get; set; }
         public int Year { get; set; }
         public string Season { get; set; }
+        public uint Score { get; set; }
+        public virtual ICollection<Wear> Wears { get; set; }
+        public uint Rates { get; set; }
+        public uint RateCount { get; set; }
     }
 }

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using FashionCollection_Project.Database;
 using FashionCollection_Project.Database.interfaces;
+using FashionCollection_Project.Logger;
 using FashionCollection_Project.Models;
 using FashionCollection_Project.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ILogger = FashionCollection_Project.Logger.ILogger;
 
 namespace FashionCollection_Project
 {
@@ -17,9 +19,10 @@ namespace FashionCollection_Project
     public class FashionCollectionController : ControllerBase
     {
         ICollectionProvider collectionProvider = new DBCollectionProvider();
+        ILogger logger = new TxtLogger();
         [HttpGet]
         [Route("get")]
-        public IEnumerable<FashionCollection> Get()
+        public IEnumerable<FashionCollectionDTO> Get()
         {
             //FashionCollection f1 = new FashionCollection("Armani", 10, 2009, "summer");
             //FashionCollection f2 = new FashionCollection("Gucci", 10, 2020, "winter");
@@ -27,7 +30,12 @@ namespace FashionCollection_Project
             //DBProvider.AddCollection(f1);
             //DBProvider.AddCollection(f2);
             List<FashionCollection> l = collectionProvider.RetrieveAllCollections();
-            return l;
+            List<FashionCollectionDTO> ret = new List<FashionCollectionDTO>();
+            foreach(FashionCollection f in l)
+            {
+                ret.Add(f.CreateDTO());
+            }
+            return ret;
         }
         [HttpDelete]
         [Route("delete")]
@@ -35,13 +43,13 @@ namespace FashionCollection_Project
         {
             if (collectionProvider.DeleteCollection(id))
             {
-                Logger.LogEvent(EventType.INFO, $"Collection with id: {id} deleted.", DateTime.Now);
+                logger.LogEvent(EventType.INFO, $"Collection with id: {id} deleted.", DateTime.Now);
                 return "ok";
 
             }
             else
             {
-                Logger.LogEvent(EventType.ERROR, $"Collection with id: {id} cannot be deleted, it does not exist.", DateTime.Now);
+                logger.LogEvent(EventType.ERROR, $"Collection with id: {id} cannot be deleted, it does not exist.", DateTime.Now);
                 return "error";
             }
         }
@@ -51,14 +59,15 @@ namespace FashionCollection_Project
         {
             FashionCollection fc = collectionProvider.FindCollectionById(id);
             FashionCollection newCollection= new FashionCollection(fc.Designer, fc.Year, fc.Season);
+            
             if (fc != null)
             {
-                Logger.LogEvent(EventType.INFO, $"Collection with id: {id} copied.", DateTime.Now);
+                logger.LogEvent(EventType.INFO, $"Collection with id: {id} copied.", DateTime.Now);
                 collectionProvider.AddCollection(newCollection);
             }
             else
             {
-                Logger.LogEvent(EventType.ERROR, $"Collection with id: {id} cannot be copied, it does not exist.", DateTime.Now);
+                logger.LogEvent(EventType.ERROR, $"Collection with id: {id} cannot be copied, it does not exist.", DateTime.Now);
             }
         }
         [HttpGet]
@@ -73,13 +82,13 @@ namespace FashionCollection_Project
                 fc.Score = fc.Rates / fc.RateCount;
                 //uint newScore=
                 int s =(int)fc.Season;
-                EditCollection(new FashionCollectionDTO(fc.Designer,fc.Year,s.ToString()));
-                Logger.LogEvent(EventType.INFO, $"Collection with id: {id} rated with {rate}.", DateTime.Now);
+                collectionProvider.UpdateCollection(fc);
+                logger.LogEvent(EventType.INFO, $"Collection with id: {id} rated with {rate}.", DateTime.Now);
 
             }
             else
             {
-                Logger.LogEvent(EventType.ERROR, $"Collection with id: {id} cannot be rated, it does not exist.", DateTime.Now);
+                logger.LogEvent(EventType.ERROR, $"Collection with id: {id} cannot be rated, it does not exist.", DateTime.Now);
 
             }
         }
@@ -90,18 +99,18 @@ namespace FashionCollection_Project
             int season = Int32.Parse(collection.Season);
             if (season < 0 || season > 3)
                 return NotFound("Invalid input.");
-            List<FashionCollection> collections = DBProvider.RetrieveAllCollections();
+            List<FashionCollection> collections = collectionProvider.RetrieveAllCollections();
             FashionCollection fashionCollection = collection.CreateFashionCollection();
             foreach(FashionCollection fc in collections)
             {
                 if(fc.Designer==collection.Designer && fc.Season== fashionCollection.Season)
                 {
-                    Logger.LogEvent(EventType.ERROR, $"Collection by {collection.Designer} for season: {collection.Season} cannot be added, it already exist.", DateTime.Now);
+                    logger.LogEvent(EventType.ERROR, $"Collection by {collection.Designer} for season: {collection.Season} cannot be added, it already exist.", DateTime.Now);
                     return NotFound("Collection already exists");
                 }
                 
             }
-            Logger.LogEvent(EventType.INFO, $"Collection  by {collection.Designer} for season: {collection.Season} added.", DateTime.Now);
+            logger.LogEvent(EventType.INFO, $"Collection  by {collection.Designer} for season: {collection.Season} added.", DateTime.Now);
             collectionProvider.AddCollection(fashionCollection);
             
             return Ok("Added");
@@ -116,12 +125,12 @@ namespace FashionCollection_Project
             if (collectionProvider.FindCollectionById(collection.Id)!=null)
             {
                 collectionProvider.UpdateCollection(collection.CreateFashionCollection());
-                Logger.LogEvent(EventType.INFO, $"Collection  by {collection.Designer} for season: {collection.Season} edited.", DateTime.Now);
+                logger.LogEvent(EventType.INFO, $"Collection  by {collection.Designer} for season: {collection.Season} edited.", DateTime.Now);
                 return Ok("ok");
             }
             else
             {
-                Logger.LogEvent(EventType.ERROR, $"Collection by {collection.Designer} for season: {collection.Season} cannot be edited, it does not exist.", DateTime.Now);
+                logger.LogEvent(EventType.ERROR, $"Collection by {collection.Designer} for season: {collection.Season} cannot be edited, it does not exist.", DateTime.Now);
                 return NotFound("Collection does not exist.");
             }
 

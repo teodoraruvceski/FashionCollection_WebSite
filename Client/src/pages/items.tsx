@@ -1,8 +1,8 @@
 import * as React from "react";
-import {useState,useEffect} from "react";
+import {useState,useEffect,useContext} from "react";
 import '../styles/items.css'
 import {useNavigate} from 'react-router-dom';
-import { CopyIcon,EditIcon, AddIcon, DeleteIcon,HamburgerIcon } from '@chakra-ui/icons'
+import { CopyIcon,EditIcon, AddIcon, DeleteIcon,HamburgerIcon,StarIcon } from '@chakra-ui/icons'
 import {
   ChakraProvider,
   Box,
@@ -25,16 +25,19 @@ import {
   ModalCloseButton,
   useDisclosure
 } from "@chakra-ui/react"
- import axios from "axios";
+import axios from "axios";
+import { LogEvent } from "../services/logEvent"
+import {AuthProvider,AuthContext} from "../authProvider";
  const Items = () => {
   const [collections,setCollections] = React.useState([]);
   const [search,setSearch]=useState("");
   const [message,setMessage]=useState("");
-  const [user,setUser]=useState(null);
+  // const [user, setUser] = useState(null);
+   const {user,setUser}= useContext(AuthContext);
   const baseURLdelete="https://localhost:44332/fashioncollection/delete/?id={id}";
   const baseURLcopy="https://localhost:44332/fashioncollection/copy?id={id}";
    const baseURLrate="https://localhost:44332/fashioncollection/rate?id={id}&rate={rate}";
-  const { isOpen, onOpen, onClose } = useDisclosure();
+   const { isOpen, onOpen, onClose } = useDisclosure();
   const [rateValue,setRateValue]=useState();
   const [rateId,setRateId]=useState();
 //   window.onbeforeunload = () => {
@@ -52,23 +55,27 @@ import {
     setRateValue(value); 
    console.log(rateValue);
   };
- const deleteItem= async (collectionId)=>{
+ const deleteItem= async (collectionId:number)=>{
    console.log("delete ");
    console.log(collectionId);
   await axios
-    .delete(baseURLdelete.replace("{id}",collectionId));
-    mojServis();
+     .delete(baseURLdelete.replace("{id}", collectionId));
+  
+     mojServis();
+     LogEvent("deleted collection with id: " + collectionId, "INFO");
  };
- const copyItem= async (collectionId)=>{
+ const copyItem= async (collectionId:number)=>{
    console.log("copy ");
    console.log(collectionId);
    console.log(baseURLcopy);
   await axios
-    .get(baseURLcopy.replace("{id}",collectionId));
-    mojServis();
+     .get(baseURLcopy.replace("{id}", collectionId));
+    
+   mojServis();
+    LogEvent("copied collection with id: "+collectionId, "INFO");
  };
    const nav=useNavigate();
-const editItem= async (collectionId)=>{//////////////////////////////////
+const editItem= async (collectionId:number)=>{//////////////////////////////////
    console.log("edit ");
    console.log(collectionId);
    nav('/editCollection');
@@ -76,7 +83,7 @@ const editItem= async (collectionId)=>{//////////////////////////////////
    console.log(obj);
     localStorage.setItem('collection',JSON.stringify(obj));
  };
- const details=async (collectionId)=>{
+ const details=async (collectionId:number)=>{
    console.log("details "+collectionId);
    nav('/collectionDetails');
     let obj = collections.find(o => o.id === collectionId);
@@ -91,6 +98,8 @@ const editItem= async (collectionId)=>{//////////////////////////////////
    {
      setMessage("Please insert number from 1 to 10.");
      setRateValue("");
+     
+     LogEvent("rated collection with id: "+rateId+" INVALID rate value "+rateValue, "ERROR");
    }
    else
    {
@@ -100,21 +109,34 @@ const editItem= async (collectionId)=>{//////////////////////////////////
       await axios
         .get(baseURLrate.replace("{id}",rateId+'').replace("{rate}",rateValue));
     
-        mojServis();
+   
+        
+     mojServis();
+      LogEvent("rated collection with id: "+rateId+", rate value "+rateValue, "INFO");
       setMessage("");
       setRateValue();
       onClose();
    }
- };
+   };
+  //  useEffect(() =>
+  //  {
+  //    setCollections(JSON.parse(localStorage.getItem("collections")));
+  //  },[JSON.parse(localStorage.getItem("collections"))])
 useEffect(() => {
-   mojServis();
+  mojServis();
+  console.log(collections);
   const u=sessionStorage.getItem('user');
   setUser(JSON.parse(sessionStorage.getItem("user")));
   console.log(JSON.parse(sessionStorage.getItem("user")));
   },[sessionStorage.getItem("user")]);
  const mojServis =async ()=>{
     var d;
-     await axios.get(`https://localhost:44332/fashioncollection/get`).then((response)=>setCollections(response.data));
+   await axios.get(`https://localhost:44332/fashioncollection/get`).then((response) =>
+   {
+     setCollections(response.data);
+     console.log(response.data);
+     localStorage.setItem("collections", JSON.stringify(response.data));
+   });
     //setCollections(d);
 }
 
@@ -138,8 +160,9 @@ const initialRef = React.useRef()
                   onChange={handleChange}
                   placeholder="Search..."
                   variant="filled"
-                  textColor="#F3383F"
-                  bgColor="#F1EFED"
+                  textColor="#794D27"
+                    bgColor="#E2E0E0"
+                    focusBorderColor="#794D27"
                 />
               </InputGroup>
             </FormControl>
@@ -159,68 +182,107 @@ const initialRef = React.useRef()
             const {id,designer, score, season,year }=collection
             return <div key={id}>
               <VStack>
-               <Box borderRadius="lg" textColor="#F3383F" width={600} borderColor="transprent"  borderWidth={2}  backgroundColor="#F1EFED">
+               <Box borderRadius="lg" textColor="#794D27" width={650} borderColor="#D5C4B4"  borderWidth={2}  backgroundColor="#D5C4B4">
                
                 <Stack direction="row">
                   <Box alignContent="start" width={115} marginRight={10}>
                      <Text  as="h4">{designer}</Text>
                   </Box>
                   <Box width={95} marginRight={10}>
-                      {season===0 &&(<>
+                      {season==="0" &&(<>
                         <Text as="p">
                       Season: Spring
                     </Text>
                     </>)}
-                    {season===1 &&(<>
+                    {season==="1" &&(<>
                         <Text as="p">
                       Season: Summer
                     </Text>
                     </>)}
-                    {season===2 &&(<>
+                    {season==="2" &&(<>
                         <Text as="p">
                       Season: Fall
                     </Text>
                     </>)}
-                    {season===3 &&(<>
+                    {season==="3" &&(<>
                         <Text as="p">
                       Season: Winter
                     </Text>
                     </>)}
                    
                   </Box>
-                  <Box width={95} marginRight={10}>
+                  <Box width={95}>
                      <Text>
                       Year: {year}
                     </Text>
                   </Box>
-                  <Box width={95} marginRight={10}>
-                     <Text>
-                      Score: {score}
-                    </Text>
+                  <Box textColor="#FCB900" padding={3} borderColor="#000000"   margin={5}>
+                      
+                      
+                      {
+                          score === 10 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> </Text>
+                      }
+                      {
+                          score === 9 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/ ><StarIcon/> <StarIcon/> <StarIcon/> </Text>
+                      }
+                      {
+                          score === 8 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> </Text>
+                      }
+                      {
+                          score === 7 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/></Text>
+                      }
+                      {
+                          score === 6 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> </Text>
+                      }
+                      {
+                          score === 5 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/></Text>
+                      }
+                      {
+                          score === 4 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/> <StarIcon/></Text>
+                      }
+                      {
+                          score === 3 &&
+                          <Text><StarIcon/> <StarIcon/> <StarIcon/></Text>
+                      }
+                      {
+                          score === 2 &&
+                          <Text><StarIcon/> <StarIcon/></Text>
+                      }
+                      {
+                          score === 1 &&
+                          <Text><StarIcon/></Text>
+                        }
                   </Box>
                 </Stack>
                
                 </Box>
                 <Stack spacing={7}  direction="row">
                   <Box  margin={0}>
-                    <Button onClick={()=>{copyItem(id);console.log(id+" copy");}} 
-                     textColor="#FFFFFF" letterSpacing={3} backgroundColor="#F3383F"><CopyIcon/></Button>
+                    <Button opacity="80%" onClick={()=>{copyItem(id);console.log(id+" copy");}} 
+                     textColor="#FFFFFF" letterSpacing={3} backgroundColor="#A26734"><CopyIcon/></Button>
                   </Box>
                   <Box margin={5}>
-                    <Button onClick={()=>{deleteItem(id);console.log(id+" delete");}} 
-                  textColor="#FFFFFF" backgroundColor="#F3383F"><DeleteIcon/></Button>
+                    <Button opacity="80%" onClick={()=>{deleteItem(id);console.log(id+" delete");}} 
+                  textColor="#FFFFFF" backgroundColor="#A26734"><DeleteIcon/></Button>
                   </Box>
                   <Box marginRight={5}>
-                    <Button onClick={()=>{editItem(id);console.log(id+" edit");}} 
-                    textColor="#FFFFFF" backgroundColor="#F3383F"><EditIcon/></Button>
+                    <Button opacity="80%" onClick={()=>{editItem(id);console.log(id+" edit");}} 
+                    textColor="#FFFFFF" backgroundColor="#A26734"><EditIcon/></Button>
                   </Box>
                   <Box marginRight={5}>
-                    <Button onClick={()=>details(id)}  
-                  textColor="#FFFFFF"  backgroundColor="#F3383F"><HamburgerIcon/></Button>
+                    <Button opacity="80%" onClick={()=>details(id)}  
+                  textColor="#FFFFFF"  backgroundColor="#A26734"><HamburgerIcon/></Button>
                   </Box>
                   <Box marginRight={5}>
-                    <Button onClick={()=>{setRateId(id);onOpen();}} textColor="#FFFFFF" 
-                  backgroundColor="#F3383F">RATE</Button>
+                    <Button opacity="80%" onClick={()=>{setRateId(id);onOpen();}} textColor="#FFFFFF" 
+                  backgroundColor="#A26734">RATE</Button>
                   </Box>
                 </Stack>
                  </VStack>
@@ -242,20 +304,22 @@ const initialRef = React.useRef()
                               onChange={handleChangeModal}
                               placeholder="1 - 10"
                               variant="filled"
-                              textColor="#F3383F"
-                              bgColor="#F1EFED"
-                                ref={initialRef}
+                              textColor="#794D27"
+                              bgColor="#E2E0E0"
+                          ref={initialRef}
+                            focusBorderColor="#794D27"
+
                             />
                           </InputGroup>
                         </FormControl>
-                        <Text textColor="#F3383F">{message}</Text>
+                        <Text textColor="#794D27">{message}</Text>
                     </ModalBody>
                        
                     <ModalFooter>
-                      <Button backgroundColor="#F3383F" textColor="#FFFFFF" mr={3} onClick={onClose}>
+                      <Button backgroundColor="#A26734" textColor="#FFFFFF" mr={3} onClick={onClose}>
                         Close
                       </Button>
-                      <Button backgroundColor="#F3383F"  textColor="#FFFFFF" onClick={()=>{rateItem();}} variant="ghost">Rate</Button>
+                      <Button backgroundColor="#A26734"  textColor="#FFFFFF" onClick={()=>{rateItem();}} variant="ghost">Rate</Button>
                     </ModalFooter>
                   </ModalContent>
                 </Modal>
@@ -263,8 +327,8 @@ const initialRef = React.useRef()
           })}
         </VStack>}
         {!user && <Box>
-          <Text textColor="#F3383F">Welcome!</Text>
-        <Text textColor="#F3383F">Log in to see collections</Text>
+          <Text textColor="#794D27">Welcome!</Text>
+        <Text textColor="#794D27">Log in to see collections</Text>
         </Box>}
       </Grid>
      

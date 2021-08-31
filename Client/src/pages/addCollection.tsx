@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import {useNavigate} from 'react-router-dom';
 import {addCollectionService} from '../services/addCollectionService';
+import { LogEvent } from "../services/logEvent"
 
 const AddCollection = ()=>{
 
@@ -45,9 +46,10 @@ const handleChangeNum = (e) => {
     e.preventDefault();
      if(collection.designer==="" ||
        collection.year==="" ||
-       collection.season==="" )
+       collection.season===-1 )
        {
-         setMessage("Please fill in all fields.");
+       setMessage("Please fill in all fields.");
+       LogEvent("tried to add collection, INVALID input.","WARNING");
        }
        else{
          console.log(collection);
@@ -55,10 +57,12 @@ const handleChangeNum = (e) => {
         if(ret==="Collection for this season already exists")
         {
           setMessage(ret);
+          LogEvent("tried to add collection, collection already exists.","ERROR");
         }
         else
         {
           //setMessage(ret);/////////////////////////////////////////////////////////////
+          LogEvent("added new collection.","INFO");
           setMessage("Added");
         }
         })
@@ -79,10 +83,10 @@ const handleChangeNum = (e) => {
               onChange={handleChange}
               placeholder="Designer"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
               width="200 px"
-              focusBorderColor="#B794F4"
+              focusBorderColor="#794D27"
               
             />
           </InputGroup>
@@ -90,14 +94,15 @@ const handleChangeNum = (e) => {
        <FormControl isRequired>
           <InputGroup>
             <Select
-              bg="#F1EFED"
+              bg="#E2E0E0"
               borderColor="#F1EFED"
-              textColor="#F3383F"
+              textColor="#794D27"
               placeholder="Select season"
               onChange={handleChange}
               name="season"
               id="season"
-              typeof="number"
+                typeof="number"
+                focusBorderColor="#794D27"
               value={collection.season}
             >
               <option value="1">Summer</option>
@@ -118,17 +123,20 @@ const handleChangeNum = (e) => {
               onChange={handleChangeNum}
               placeholder="Year"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
-              width="200 px"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
+                width="200 px"
+                focusBorderColor="#794D27"
+
+
             />
           </InputGroup>
         </FormControl>
         
-        <Button  textColor="#FFFFFF" bgColor="#F3383F"   loadingText="Adding..." onClick={handleSubmit} width="200 px">
+        <Button  textColor="#FFFFFF" bgColor="#A26734"   loadingText="Adding..." onClick={handleSubmit} width="200 px">
           Add
         </Button>
-        <Text  textColor="#F3383F">{message}</Text>
+        <Text  textColor="#794D27">{message}</Text>
       </Stack>
       </Center>
     </form>

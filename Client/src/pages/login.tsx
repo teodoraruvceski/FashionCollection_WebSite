@@ -18,7 +18,9 @@ import {AuthProvider,AuthContext} from "../authProvider";
 
 
 
-const Login = ()=>{
+const Login = () => {
+  var logFiles = JSON.parse(sessionStorage.getItem("log"));
+  var adminLogFiles = JSON.parse(localStorage.getItem("adminLog"));
 const [message,setMessage] = useState("");
  const {user,setUser}= useContext(AuthContext);
 const nav=useNavigate();
@@ -52,6 +54,14 @@ useEffect(() => {
       if(ret==="Incorrect username or password")
       {
         setMessage(ret);
+        let info = {
+          message: "User " + person.username + " failed to logged in.",
+          time: new Date(),
+          messageType: "ERROR"
+        }
+        console.log(logFiles);
+        logFiles.push(info);
+        sessionStorage.setItem("log", JSON.stringify(logFiles));
       }
       else
       {
@@ -61,6 +71,15 @@ useEffect(() => {
         //localStorage.setItem("user",JSON.stringify(ret));
         sessionStorage.setItem("user",JSON.stringify(ret));
         console.log("User logged in");
+        let info = {
+          message: "User " + person.username + " logged in.",
+          time: new Date(),
+          messageType: "INFO"
+        }
+        logFiles = [];
+        logFiles.push(info);
+        console.log(logFiles);
+        sessionStorage.setItem("log", JSON.stringify(logFiles));
       }
     })
   }
@@ -78,7 +97,7 @@ useEffect(() => {
       <Stack spacing={3} margin={4}>
         <FormControl isRequired>
           <InputGroup>
-            <InputLeftElement children={<Icon as={InfoIcon} />} />
+            <InputLeftElement color="#A26734" children={<Icon as={InfoIcon} />} />
             <Input
               type="name"
               name="username"
@@ -87,16 +106,16 @@ useEffect(() => {
               onChange={handleChange}
               placeholder="Username"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#E9D8FD"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
               width="200 px"
-              focusBorderColor="#E9D8FD"
+              focusBorderColor="#794D27"
             />
           </InputGroup>
         </FormControl>
         <FormControl isRequired>
           <InputGroup>
-           <InputLeftElement  children={<Icon as={LockIcon} />} />
+           <InputLeftElement color="#A26734" children={<Icon as={LockIcon} />} />
             <Input
               type="password"
               name="password"
@@ -105,18 +124,18 @@ useEffect(() => {
               onChange={handleChange}
               placeholder="Password"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#E9D8FD"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
               width="200 px"
-              focusBorderColor="#E9D8FD"
+                  focusBorderColor="#794D27"
               
             />
           </InputGroup>
         </FormControl>
-        <Button  textColor="#FFFFFF" bgColor="#F3383F"   loadingText="Logging in..." onClick={handleSubmit} width="200 px">
+        <Button  textColor="#FFFFFF" bgColor="#A26734"   loadingText="Logging in..." onClick={handleSubmit} width="200 px">
           Log in
         </Button>
-        <Text  textColor="#F3383F">{message}</Text>
+        <Text  textColor="#794D27">{message}</Text>
       </Stack>
       </Center>
     </form>

@@ -47,15 +47,7 @@ namespace FashionCollection_Project.Database
 			}
 			return ret;
 		}
-		public  Wear FindWearById(int id)
-		{
-			Wear w = null;
-			using (var db = new ProjectDbContext())
-			{
-				w = db.Wears.Find(id);
-			}
-			return w;
-		}
+		
 		public  bool DeleteWear(int id)
 		{
 			using (var db = new ProjectDbContext())

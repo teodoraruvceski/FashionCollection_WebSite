@@ -55,8 +55,8 @@ namespace FashionCollection_Project
             FashionCollection fc = pom[0];
             if(wearProvider.RetrieveWearsByCollectionId(fc.Id).Count==0)
             {
-                wearProvider.AddWear(new Wear("Joseph", "Short pants", fc.Id));
-                wearProvider.AddWear(new Wear("Hose", "Linen pants", fc.Id));
+                wearProvider.AddWear(new Wear("Joseph", "Short pants", fc.Id, WearType.Bottom));
+                wearProvider.AddWear(new Wear("Hose", "Linen pants", fc.Id,WearType.Bottom));
             }
 
             app.UseCors(options =>

@@ -26,7 +26,9 @@ namespace FashionCollection_Project.Models.DTOs
         }
         public User CreateUser()
         {
-           return new User(this.Name, this.LastName, this.Username, this.Password, this.Email, (ROLE)(Int32.Parse(this.Role)));
+          User u= new User(this.Name, this.LastName, this.Username, this.Password, this.Email, (ROLE)(Int32.Parse(this.Role)));
+            u.Id = Id;
+            return u;
         }
 
         public string Name { get; set; }

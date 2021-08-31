@@ -9143,23 +9143,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Teodora\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Stefan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj",
+      "projectUniqueName": "C:\\Users\\Stefan\\Desktop\\FashionCollection_WebSite\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj",
       "projectName": "FashionCollection_Project",
-      "projectPath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj",
-      "packagesPath": "C:\\Users\\Teodora\\.nuget\\packages\\",
-      "outputPath": "E:\\Tea\\fax\\3.godina\\2.sem\\rva\\Projekat\\FashionCollection_WebSiteGit\\Server\\FashionCollection_Project\\obj\\",
+      "projectPath": "C:\\Users\\Stefan\\Desktop\\FashionCollection_WebSite\\Server\\FashionCollection_Project\\FashionCollection_Project.csproj",
+      "packagesPath": "C:\\Users\\Stefan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Stefan\\Desktop\\FashionCollection_WebSite\\Server\\FashionCollection_Project\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Teodora\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Stefan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9171,6 +9167,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -9182,6 +9179,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "EntityFramework": {
             "target": "Package",
@@ -9236,7 +9234,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

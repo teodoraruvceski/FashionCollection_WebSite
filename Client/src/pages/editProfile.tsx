@@ -15,6 +15,7 @@ import { InfoIcon, LockIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { MailRounded, PersonAddRounded, PersonRounded } from "@material-ui/icons";
 import {useNavigate} from 'react-router-dom';
+import { LogEvent } from "../services/logEvent"
 
 const Register = ()=>{
 const [message,setMessage] = useState("");
@@ -51,9 +52,12 @@ const FunCall = async () => {
     if(person.name==="" ||
        person.lastName==="" )
        {
-         setMessage("Please fill in all fields.");
+      setMessage("Please fill in all fields.");
+      LogEvent("tried to edit profile, INVALID input.","WARNING");
        }
-       else {
+    else {
+      console.log(person);
+      LogEvent("edited profile.","INFO");
       FunCall();
     }
   };
@@ -64,10 +68,10 @@ const FunCall = async () => {
 
       <Stack spacing={3} margin={4}>
         <HStack>
-         <Text padding={2} textColor="#F3383F">Name</Text>
+         <Text padding={2} textColor="#794D27">Name</Text>
           <FormControl isRequired>
           <InputGroup>
-            <InputLeftElement children={<Icon as={InfoIcon} />} />
+            <InputLeftElement color="#A26734" children={<Icon as={InfoIcon} />} />
             <Input
               type="name"
               name="name"
@@ -76,17 +80,19 @@ const FunCall = async () => {
               onChange={handleChange}
               placeholder="Name"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
-              width="200 px"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
+                  width="200 px"
+              focusBorderColor="#794D27"
+                  
             />
           </InputGroup>
         </FormControl>
         </HStack><HStack>
-         <Text padding={2} textColor="#F3383F">Lastname</Text>
+         <Text padding={2} textColor="#794D27">Lastname</Text>
         <FormControl isRequired>
           <InputGroup>
-            <InputLeftElement children={<Icon as={InfoIcon} />} />
+            <InputLeftElement color="#A26734" children={<Icon as={InfoIcon} />} />
             <Input
               type="lastaname"
               name="lastName"
@@ -95,17 +101,18 @@ const FunCall = async () => {
               onChange={handleChange}
               placeholder="Lastname"
               variant="filled"
-              textColor="#F3383F"
-              bgColor="#F1EFED"
-              width="200 px"
+              textColor="#794D27"
+              bgColor="#E2E0E0"
+                  width="200 px"
+                  focusBorderColor="#794D27"
             />
           </InputGroup>
         </FormControl>
         </HStack>
-        <Button  textColor="#ffffff" bgColor="#F3383F" onClick={handleSubmit} width="200 px">
+        <Button  textColor="#ffffff" bgColor="#A26734" onClick={handleSubmit} width="200 px">
           Save
         </Button>
-        <Text  textColor="#F3383F">{message}</Text>
+        <Text  textColor="#794D27">{message}</Text>
       </Stack>
       </Center>
     </form>
