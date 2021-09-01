@@ -38,13 +38,13 @@ import {AuthProvider,AuthContext} from "../authProvider";
     <Box bgColor="#ffffff" textAlign="center" fontSize="xl">
      
       <Grid minH="100vh" p={3}>
-            <Table variant="striped" >
+        <Table borderWidth={1} borderColor="#A26734" colorScheme="yellow"  color="#794D27" variant="striped" >
         <TableCaption>Logs</TableCaption>
-        <Thead>
+        <Thead borderWidth={1} borderColor="#A26734">
             <Tr>
-            <Th>Message</Th>
-            <Th>Type</Th>
-            <Th>Date and time</Th>
+            <Th color="#794D27">Message</Th>
+            <Th color="#794D27">Type</Th>
+            <Th color="#794D27">Date and time</Th>
             </Tr>
         </Thead>
             <Tbody>

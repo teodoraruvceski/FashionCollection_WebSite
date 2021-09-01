@@ -32,14 +32,19 @@ namespace FashionCollection_Project.Controllers
             //DBProvider.AddCollection(f2);
             
             FashionCollection fc = collectionProvider.FindCollectionById(id);
+            
             List<Wear> proba = fc.Wears.ToList() ;
             List<Wear> l = new List<Wear>();
-            if (fc != null)
-                l = wearProvider.RetrieveWearsByCollectionId(id);
             List<WearDTO> ret = new List<WearDTO>();
-            foreach(Wear w in l)
+            if (fc != null)
             {
-                ret.Add(w.CreateDTO());
+                l = wearProvider.RetrieveWearsByCollectionId(id);
+                
+                foreach(Wear w in l)
+                {
+                    ret.Add(w.CreateDTO());
+                }
+
             }
             return ret;
         }

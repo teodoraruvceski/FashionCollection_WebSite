@@ -216,7 +216,7 @@ const initialRef = React.useRef()
                       Year: {year}
                     </Text>
                   </Box>
-                  <Box textColor="#FCB900" padding={3} borderColor="#000000"   margin={5}>
+                  <Box textColor="#FCB900" padding={3} borderColor="#000000" fontSize={19}  margin={5}>
                       
                       
                       {
@@ -258,7 +258,8 @@ const initialRef = React.useRef()
                       {
                           score === 1 &&
                           <Text><StarIcon/></Text>
-                        }
+                      }
+                      <Text fontSize="15" color="#794D27">{score}/10</Text>
                   </Box>
                 </Stack>
                

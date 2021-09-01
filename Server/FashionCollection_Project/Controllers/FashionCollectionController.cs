@@ -19,6 +19,7 @@ namespace FashionCollection_Project
     public class FashionCollectionController : ControllerBase
     {
         ICollectionProvider collectionProvider = new DBCollectionProvider();
+        IWearProvider wearProvider = new DBWearProvider();
         ILogger logger = new TxtLogger();
         [HttpGet]
         [Route("get")]
@@ -43,6 +44,11 @@ namespace FashionCollection_Project
         {
             if (collectionProvider.DeleteCollection(id))
             {
+                List<Wear> collectionWears = wearProvider.RetrieveWearsByCollectionId(id);
+                foreach(Wear w in collectionWears)
+                {
+                    wearProvider.DeleteWear(w.Id);
+                }
                 logger.LogEvent(EventType.INFO, $"Collection with id: {id} deleted.", DateTime.Now);
                 return "ok";
 

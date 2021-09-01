@@ -2,6 +2,7 @@
 using FashionCollection_Project.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,7 +48,7 @@ namespace FashionCollection_Project.Database
 			FashionCollection collection = null;
 			using (var db = new ProjectDbContext())
 			{
-				collection = db.Collections.Find(id);
+				collection = db.Collections.Where(a => a.Id == id).Include(a => a.Wears).ToList()[0];
 			}
 			return collection;
 		}

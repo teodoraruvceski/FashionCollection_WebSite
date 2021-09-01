@@ -92,3 +92,15 @@ EventType: ERROR, Message: Collection by Versacehghghgh for season: 1 cannot be 
 EventType: INFO, Message: Collection  by FENDIiiiiiii for season: 1 added., DateTime: 01/09/YYYY 01:06:04
 EventType: INFO, Message: Collection with id: 1029 deleted., DateTime: 01/09/YYYY 01:06:14
 EventType: ERROR, Message: Collection by hghghgh for season: 1 cannot be edited, it does not exist., DateTime: 01/09/YYYY 01:06:33
+EventType: INFO, Message: User tea successfully logged in, DateTime: 01/09/YYYY 10:39:45
+EventType: INFO, Message: Collection with id: 2002 deleted., DateTime: 01/09/YYYY 10:40:19
+EventType: INFO, Message: Wear with name: Lina added., DateTime: 01/09/YYYY 10:40:56
+EventType: INFO, Message: Wear with name: Spotted added., DateTime: 01/09/YYYY 10:41:26
+EventType: INFO, Message: Collection with id: 2003 rated with 9., DateTime: 01/09/YYYY 10:41:35
+EventType: INFO, Message: Wear with name: teodora added., DateTime: 01/09/YYYY 11:10:30
+EventType: INFO, Message: Wear with name: teodora added., DateTime: 01/09/YYYY 11:11:48
+EventType: INFO, Message: Wear with id: 2007 deleted., DateTime: 01/09/YYYY 11:12:03
+EventType: INFO, Message: Wear with id: 2006 deleted., DateTime: 01/09/YYYY 11:12:05
+EventType: INFO, Message: Collection  by Versace for season: 2 added., DateTime: 01/09/YYYY 11:12:14
+EventType: INFO, Message: Wear with name: Gap added., DateTime: 01/09/YYYY 11:12:28
+EventType: INFO, Message: User tea successfully logged in, DateTime: 01/09/YYYY 11:14:44
