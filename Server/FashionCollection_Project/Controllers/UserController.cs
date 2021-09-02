@@ -17,7 +17,7 @@ namespace FashionCollection_Project.Controllers
     public class UserController : ControllerBase
     {
         IUserProvider userProvider = new DBUserProvider();
-        ILogger logger = new TxtLogger();
+        ILogger logger = TxtLogger.Instance();
         [HttpPost]
         [Route("login")]
         public IActionResult Login([FromBody]UserDTO u)

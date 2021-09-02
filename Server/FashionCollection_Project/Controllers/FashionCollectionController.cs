@@ -20,7 +20,7 @@ namespace FashionCollection_Project
     {
         ICollectionProvider collectionProvider = new DBCollectionProvider();
         IWearProvider wearProvider = new DBWearProvider();
-        ILogger logger = new TxtLogger();
+        ILogger logger = TxtLogger.Instance();
         [HttpGet]
         [Route("get")]
         public IEnumerable<FashionCollectionDTO> Get()
@@ -64,10 +64,10 @@ namespace FashionCollection_Project
         public void Copy(int id)
         {
             FashionCollection fc = collectionProvider.FindCollectionById(id);
-            FashionCollection newCollection= new FashionCollection(fc.Designer, fc.Year, fc.Season);
             
             if (fc != null)
             {
+            FashionCollection newCollection= new FashionCollection(fc.Designer, fc.Year, fc.Season);
                 logger.LogEvent(EventType.INFO, $"Collection with id: {id} copied.", DateTime.Now);
                 collectionProvider.AddCollection(newCollection);
             }
@@ -105,6 +105,8 @@ namespace FashionCollection_Project
             int season = Int32.Parse(collection.Season);
             if (season < 0 || season > 3)
                 return NotFound("Invalid input.");
+            if(collection.Year>DateTime.Now.Year+1)
+                return NotFound("Invalid year.");
             List<FashionCollection> collections = collectionProvider.RetrieveAllCollections();
             FashionCollection fashionCollection = collection.CreateFashionCollection();
             foreach(FashionCollection fc in collections)
@@ -128,6 +130,8 @@ namespace FashionCollection_Project
             int season = Int32.Parse(collection.Season);
             if (season < 0 || season > 3)
                 return NotFound("Invalid input.");
+            if (collection.Year > DateTime.Now.Year + 1)
+                return NotFound("Invalid year.");
             if (collectionProvider.FindCollectionById(collection.Id)!=null)
             {
                 collectionProvider.UpdateCollection(collection.CreateFashionCollection());

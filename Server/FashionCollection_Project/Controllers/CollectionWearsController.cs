@@ -19,7 +19,7 @@ namespace FashionCollection_Project.Controllers
     {
         ICollectionProvider collectionProvider = new DBCollectionProvider();
         IWearProvider wearProvider = new DBWearProvider();
-        ILogger logger = new TxtLogger();
+        ILogger logger = TxtLogger.Instance();
 
         [HttpGet]
         [Route("get")]
@@ -33,14 +33,14 @@ namespace FashionCollection_Project.Controllers
             
             FashionCollection fc = collectionProvider.FindCollectionById(id);
             
-            List<Wear> proba = fc.Wears.ToList() ;
+            List<Wear> proba;
             List<Wear> l = new List<Wear>();
             List<WearDTO> ret = new List<WearDTO>();
             if (fc != null)
             {
                 l = wearProvider.RetrieveWearsByCollectionId(id);
-                
-                foreach(Wear w in l)
+                proba = fc.Wears.ToList();
+                foreach (Wear w in l)
                 {
                     ret.Add(w.CreateDTO());
                 }

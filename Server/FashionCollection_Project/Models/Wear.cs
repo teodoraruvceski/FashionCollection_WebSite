@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FashionCollection_Project.Models
 {
-    public enum WearType { Top,Bottom,Shoes,Accessories}
+    public enum WearType { Top,Bottom,Shoes,Accessories,Dress,Overall}
     public  class Wear
     {
         public Wear(string name, string description, int fashionCollectionId,WearType type)

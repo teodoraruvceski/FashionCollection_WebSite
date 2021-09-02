@@ -59,6 +59,11 @@ const handleChangeNum = (e) => {
           setMessage(ret);
           LogEvent("tried to add collection, collection already exists.","ERROR");
         }
+        else  if(ret==="Invalid year." || ret==="Invalid input.")
+        {
+          setMessage(ret);
+          LogEvent("tried to add collection, INVALID input.","WARNING");
+        }
         else
         {
           //setMessage(ret);/////////////////////////////////////////////////////////////

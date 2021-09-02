@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FashionCollection_Project.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20210830162949_m1")]
+    [Migration("20210902085841_m1")]
     partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

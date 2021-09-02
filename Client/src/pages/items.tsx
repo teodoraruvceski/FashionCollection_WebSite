@@ -216,7 +216,7 @@ const initialRef = React.useRef()
                       Year: {year}
                     </Text>
                   </Box>
-                  <Box textColor="#FCB900" padding={3} borderColor="#000000" fontSize={19}  margin={5}>
+                  <Box width="45%" alignContent="center" textColor="#FCB900" padding={3} borderColor="#000000" fontSize={19}  margin={5}>
                       
                       
                       {
@@ -287,7 +287,7 @@ const initialRef = React.useRef()
                   </Box>
                 </Stack>
                  </VStack>
-                  
+                   <Text  textColor="#794D27">{message}</Text>
                  
                 <Modal  initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
                   <ModalOverlay />

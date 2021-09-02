@@ -48,7 +48,7 @@ namespace FashionCollection_Project.Database
 			FashionCollection collection = null;
 			using (var db = new ProjectDbContext())
 			{
-				collection = db.Collections.Where(a => a.Id == id).Include(a => a.Wears).ToList()[0];
+				collection = db.Collections.Find(id);
 			}
 			return collection;
 		}
